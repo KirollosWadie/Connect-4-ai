@@ -2,12 +2,20 @@ from connect4 import *
 from anytree import RenderTree, Node
 import numpy as np
 
+def mainpulate_arrays(arr):
+    m = np.reshape(arr, (7,7))
+    m1 = np.flip(m)
+    m2 = np.rot90(m1)
+    m3 = m2.astype(int)
+    return m3
+
 def gameTree(player, AI, heights):
 
     z = [] # AI with length 7
     z1 = [] # Player with length 49
     z2 = [] # AI with length 343 
     playerState = Node(player)
+    print(player.astype(int))
 
     # level 1 of the tree
     for i in range (0,7):
@@ -29,13 +37,13 @@ def gameTree(player, AI, heights):
             result2 = make_move(heights[l], arr)
             z2.append(Node(result2.astype(int), parent=z1[k]))
             if k == 0:
-                heights[l]+=1   
+                heights[l]+=1
             
 
-    print("z",z[1].name)
-    print("z1",z1[1].name)
-    print("z2",z2[1].name)
-    print(heights)
+    print("z",mainpulate_arrays(z[0].name))
+    print("z1",mainpulate_arrays(z1[1].name))
+    print("z2",mainpulate_arrays(z2[1].name))
+    #print(heights)
     return z1
 
 def calc_score(leafs):
