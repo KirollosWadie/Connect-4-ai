@@ -41,10 +41,10 @@ def gameTree(player, AI, heights):
             
 
     print("z",mainpulate_arrays(z[0].name))
-    print("z1",mainpulate_arrays(z1[1].name))
-    print("z2",mainpulate_arrays(z2[1].name))
+    print("z1",mainpulate_arrays(z1[0].name))
+    print("z2",mainpulate_arrays(z2[0].name))
     #print(heights)
-    return z1
+    return z1, z2
 
 def calc_score(leafs):
     for i in range(0,len(leafs)):
@@ -83,6 +83,6 @@ def gameLoap():
             m2 = np.rot90(m1)
             m3 = m2.astype(int)
             drawBoard(m3)
-            leafs = gameTree(player, AI, heights)
-            calc_score(leafs)
+            z1, z2 = gameTree(player, AI, heights)
+
 gameLoap()
