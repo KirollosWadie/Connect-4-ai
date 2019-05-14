@@ -1,0 +1,71 @@
+from connect4 import *
+from anytree import RenderTree, Node
+import numpy as np
+
+def gameTree(player, AI, heights):
+
+    z = [] # AI with length 7
+    z1 = [] # Player with length 49
+    z2 = [] # AI with length 343 
+    playerState = Node(player)
+
+    # level 1 of the tree
+    for i in range (0,7):
+        result = make_move(heights[i], AI)
+        z.append(Node(result.astype(int), parent=playerState))
+        heights[i]+=1
+
+    # level 2
+    for j in range(0,7):
+        result1 = make_move(heights[j], player)
+        heights[j]+=1
+        for k in range (0,7):
+            z1.append(Node(result1.astype(int), parent=z[j]))    
+
+    # level 3
+    for k in range(0,7):
+        result2 = make_move(heights[k], AI)
+        heights[k]+=1
+        for l in range (0,49):
+            z2.append(Node(result2.astype(int), parent=z[k]))    
+
+    
+
+    #print("z",z[0].name)
+    #print("z1",z1[0].name)
+    #print("z2",z2[0].name)
+
+def gameLoap():
+    # Encoding bitBoards to be like:
+    # col6 .... col3 col2 col1 col0
+    # Example if col 0 =
+    # 1
+    # 0
+    # 0
+    # After encoding: 100
+    x = input("Choose 'x' or 'o' ")
+    player = np.zeros((7,7), dtype=int)
+    AI = np.zeros((7,7), dtype=int)
+    # To be filled
+    heights = np.array([0,7,14,21,28,35,42])
+    heights_copy = np.copy(heights)
+    #print(heights_copy)
+    player = np.fliplr(player)
+    player = player.flatten('F')
+    AI = np.fliplr(AI)
+    AI = AI.flatten('F')
+    if x == 'x':
+        while True:
+            colNum = input("Enter Col: ")
+            z = heights[int(colNum)]
+            player = make_move(z, player)
+            heights[int(colNum)]+=1
+            # reshape player again to its original
+            m = np.reshape(player, (7,7))
+            m1 = np.flip(m)
+            m2 = np.rot90(m1)
+            m3 = m2.astype(int)
+            drawBoard(m3)
+            gameTree(player, AI, heights)
+
+gameLoap()
