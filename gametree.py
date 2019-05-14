@@ -17,23 +17,32 @@ def gameTree(player, AI, heights):
 
     # level 2
     for j in range(0,7):
-        result1 = make_move(heights[j], player)
-        heights[j]+=1
         for k in range (0,7):
+            result1 = make_move(heights[k], player)
             z1.append(Node(result1.astype(int), parent=z[j]))    
+        heights[j]+=1
 
     # level 3
     arr = np.array(z[0].name)
-    print(arr.shape)
     for k in range(0,49):
         for l in range (0,7):
             result2 = make_move(heights[l], arr)
             z2.append(Node(result2.astype(int), parent=z1[k]))
+            if k == 0:
+                heights[l]+=1   
             
 
-    print("z",z[0].name)
-    print("z1",z1[0].name)
-    print("z2",z2[0].name)
+    print("z",z[1].name)
+    print("z1",z1[1].name)
+    print("z2",z2[1].name)
+    print(heights)
+    return z1
+
+def calc_score(leafs):
+    for i in range(0,len(leafs)):
+        #print(leafs[i].name)
+        pass
+
 
 def gameLoap():
     # Encoding bitBoards to be like:
@@ -66,6 +75,6 @@ def gameLoap():
             m2 = np.rot90(m1)
             m3 = m2.astype(int)
             drawBoard(m3)
-            gameTree(player, AI, heights)
-
+            leafs = gameTree(player, AI, heights)
+            calc_score(leafs)
 gameLoap()
